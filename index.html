@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOYOKOH Inc. | 株式会社トヨコー</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --clr-black:   #0d0d0d;
+      --clr-dark:    #141414;
+      --clr-mid:     #1e1e1e;
+      --clr-gray:    #f4f4f2;
+      --clr-white:   #ffffff;
+      --clr-accent:  #00b4d8;
+      --clr-accent2: #0077b6;
+      --clr-muted:   #888888;
+      --clr-border:  #2a2a2a;
+      --font-main: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      --transition: 0.3s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-main);
+      background: var(--clr-white);
+      color: var(--clr-black);
+      overflow-x: hidden;
+    }
+
+    /* ─── HEADER / NAV ───────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 72px;
+      transition: background var(--transition), backdrop-filter var(--transition);
+    }
+    header.scrolled {
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(8px);
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--clr-white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--clr-accent); }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    nav a {
+      color: var(--clr-white);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color var(--transition);
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--clr-accent);
+      transition: width var(--transition);
+    }
+    nav a:hover { color: var(--clr-accent); }
+    nav a:hover::after { width: 100%; }
+
+    .lang-toggle {
+      display: flex;
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 2px;
+      overflow: hidden;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .lang-toggle a {
+      padding: 5px 10px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: background var(--transition), color var(--transition);
+    }
+    .lang-toggle a.active,
+    .lang-toggle a:hover {
+      background: var(--clr-accent);
+      color: var(--clr-white);
+    }
+    .lang-toggle a::after { display: none; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--clr-white);
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(0,20,40,0.82) 0%, rgba(0,0,0,0.55) 60%, transparent 100%),
+        url('https://images.unsplash.com/photo-1581092921461-7031e4bfb10e?w=1600&q=80') center/cover no-repeat;
+    }
+
+    /* Animated laser sweep overlay */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        transparent 0%, rgba(0,180,216,0.06) 50%, transparent 100%);
+      animation: laserSweep 4s ease-in-out infinite;
+    }
+    @keyframes laserSweep {
+      0%,100% { transform: translateX(-100%); }
+      50%      { transform: translateX(100%); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 8vw;
+      max-width: 760px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      color: var(--clr-accent);
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.18;
+      color: var(--clr-white);
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--clr-accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(0.82rem, 1.4vw, 1rem);
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+      margin-bottom: 42px;
+      letter-spacing: 0.03em;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--clr-accent);
+      color: var(--clr-white);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 2px solid var(--clr-accent);
+      transition: background var(--transition), color var(--transition);
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--clr-accent);
+    }
+    .btn-primary svg { width: 16px; height: 16px; transition: transform var(--transition); }
+    .btn-primary:hover svg { transform: translateX(4px); }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+    .scroll-down .line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ─── SECTION COMMONS ────────────────────────────────────── */
+    section { padding: 100px 8vw; }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--clr-accent);
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .divider {
+      width: 40px; height: 2px;
+      background: var(--clr-accent);
+      margin: 20px 0 32px;
+    }
+
+    /* ─── MISSION ────────────────────────────────────────────── */
+    #mission {
+      background: var(--clr-dark);
+      color: var(--clr-white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 120px 8vw;
+    }
+
+    .mission-visual {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
+    }
+    .mission-visual-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+        url('https://images.unsplash.com/photo-1565008576549-57569a49371d?w=900&q=80') center/cover no-repeat;
+    }
+    .mission-visual-label {
+      position: absolute;
+      bottom: 24px; left: 24px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+    }
+    .mission-number {
+      position: absolute;
+      top: 24px; right: 24px;
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(0,180,216,0.12);
+      line-height: 1;
+    }
+
+    .mission-text .section-title { color: var(--clr-white); }
+    .mission-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 16px;
+    }
+    .mission-jp {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--clr-accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    /* ─── BUSINESS ───────────────────────────────────────────── */
+    #business {
+      background: var(--clr-gray);
+      padding: 100px 8vw;
+    }
+
+    .business-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .business-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .biz-card {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .biz-card-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.6s ease;
+    }
+    .biz-card:hover .biz-card-bg { transform: scale(1.05); }
+
+    .biz-card-01 .biz-card-bg {
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%),
+        url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=900&q=80') center/cover no-repeat;
+    }
+    .biz-card-02 .biz-card-bg {
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%),
+        url('https://images.unsplash.com/photo-1565192259023-5678d2ecf7c1?w=900&q=80') center/cover no-repeat;
+    }
+
+    .biz-card-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px 44px;
+    }
+
+    .biz-num {
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.08);
+      line-height: 1;
+      position: absolute;
+      top: 32px; right: 36px;
+    }
+
+    .biz-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--clr-accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .biz-name {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--clr-white);
+      letter-spacing: 0.04em;
+      margin-bottom: 14px;
+    }
+
+    .biz-desc {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 28px;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: var(--clr-white);
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: background var(--transition), border-color var(--transition);
+      width: fit-content;
+    }
+    .btn-outline:hover {
+      background: var(--clr-accent);
+      border-color: var(--clr-accent);
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────────────── */
+    #about {
+      background: var(--clr-white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 120px 8vw;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+    .about-img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      background:
+        linear-gradient(135deg, rgba(0,119,182,0.15), rgba(0,180,216,0.1)),
+        url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=900&q=80') center/cover no-repeat;
+    }
+    .about-accent-box {
+      position: absolute;
+      bottom: -32px; right: -32px;
+      width: 180px; height: 180px;
+      background: var(--clr-accent);
+      z-index: -1;
+    }
+    .about-stat {
+      position: absolute;
+      top: 40px; left: -40px;
+      background: var(--clr-dark);
+      color: var(--clr-white);
+      padding: 24px 28px;
+      text-align: center;
+    }
+    .about-stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--clr-accent);
+      display: block;
+    }
+    .about-stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+    }
+
+    .about-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: #444;
+      margin-bottom: 16px;
+    }
+    .about-tagline {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--clr-accent2);
+      margin: 8px 0 16px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── RECRUIT ────────────────────────────────────────────── */
+    #recruit {
+      position: relative;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .recruit-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(0,20,50,0.88) 0%, rgba(0,0,0,0.6) 100%),
+        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=80') center/cover no-repeat;
+    }
+    .recruit-content {
+      position: relative;
+      z-index: 1;
+      padding: 100px 8vw;
+      max-width: 680px;
+    }
+    .recruit-content .section-title { color: var(--clr-white); }
+    .recruit-content p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 36px;
+    }
+
+    /* ─── NEWS ───────────────────────────────────────────────── */
+    #news {
+      background: var(--clr-gray);
+      padding: 100px 8vw;
+    }
+
+    .news-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .news-list { display: flex; flex-direction: column; gap: 0; }
+
+    .news-item {
+      display: grid;
+      grid-template-columns: 130px 100px 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 22px 0;
+      border-top: 1px solid #ddd;
+      text-decoration: none;
+      color: inherit;
+      transition: background var(--transition);
+    }
+    .news-item:last-child { border-bottom: 1px solid #ddd; }
+    .news-item:hover { background: rgba(0,180,216,0.04); padding-left: 12px; }
+
+    .news-date {
+      font-size: 0.78rem;
+      color: var(--clr-muted);
+      letter-spacing: 0.06em;
+    }
+    .news-cat {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border: 1px solid var(--clr-accent);
+      color: var(--clr-accent);
+    }
+    .news-title {
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .news-arrow {
+      color: var(--clr-accent);
+      font-size: 0.8rem;
+    }
+
+    /* ─── CONTACT ────────────────────────────────────────────── */
+    #contact {
+      background: var(--clr-dark);
+      padding: 100px 8vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .contact-text .section-title { color: var(--clr-white); }
+    .contact-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 36px;
+    }
+
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-field label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .form-field input,
+    .form-field textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--clr-white);
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      font-family: var(--font-main);
+      outline: none;
+      transition: border-color var(--transition);
+      resize: none;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--clr-accent); }
+    .form-field textarea { height: 120px; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--clr-black);
+      padding: 64px 8vw 32px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 220px 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--clr-border);
+      margin-bottom: 32px;
+    }
+
+    .footer-brand .logo { display: block; margin-bottom: 14px; }
+    .footer-brand p {
+      font-size: 0.75rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .footer-col h4 {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-col ul li a:hover { color: var(--clr-accent); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.72rem; }
+    .footer-bottom a {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+    }
+    .footer-bottom a:hover { color: var(--clr-accent); }
+
+    .social-links { display: flex; gap: 14px; }
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .social-link:hover { border-color: var(--clr-accent); color: var(--clr-accent); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      header { padding: 0 24px; }
+      nav { display: none; }
+      .hamburger { display: flex; }
+
+      section { padding: 72px 6vw; }
+
+      #mission, #about, #contact {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 72px 6vw;
+      }
+      .mission-visual, .about-img { height: 280px; }
+      .about-accent-box, .about-stat { display: none; }
+
+      .business-grid { grid-template-columns: 1fr; }
+      .biz-card { height: 380px; }
+
+      .news-item { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+      .news-title { grid-column: 1 / -1; }
+
+      .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 6vw; }
+      .form-row { grid-template-columns: 1fr; }
+      .news-item { grid-template-columns: 1fr; }
+      .news-cat { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── HEADER ─────────────────────────────────────────────── -->
+  <header id="header">
+    <a href="#hero" class="logo">TOYO<span>KOH</span></a>
+    <nav>
+      <a href="#business">CoolLaser</a>
+      <a href="#business">SOSEI</a>
+      <a href="#about">About Us</a>
+      <a href="#recruit">Recruit</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+      <div class="lang-toggle">
+        <a href="?lang=ja" class="active">JP</a>
+        <a href="?lang=en">EN</a>
+      </div>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </header>
+
+  <!-- ─── HERO ───────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Next New Technology</p>
+      <h1 class="hero-title">
+        <em>CoolLaser</em>で、<br>
+        インフラメンテナンスに<br>革命を。
+      </h1>
+      <p class="hero-sub">
+        Revolutionizing infrastructure maintenance with CoolLaser.<br>
+        環境にやさしく、作業者にやさしい、未来の保全技術。
+      </p>
+      <a href="#business" class="btn-primary">
+        Our Solutions
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+    <div class="scroll-down">
+      <div class="line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── MISSION ────────────────────────────────────────────── -->
+  <section id="mission">
+    <div class="mission-visual">
+      <div class="mission-visual-bg"></div>
+      <div class="mission-number">01</div>
+      <div class="mission-visual-label">Infrastructure Space</div>
+    </div>
+    <div class="mission-text">
+      <p class="section-label">Our Mission</p>
+      <div class="mission-jp">キレイに、未来へ</div>
+      <h2 class="section-title">Beautiful Future</h2>
+      <div class="divider"></div>
+      <p>
+        老朽化するインフラに対し、レーザー技術を活用した革新的なメンテナンスソリューションを提供します。
+      </p>
+      <p>
+        We address urgent societal infrastructure challenges through innovative maintenance methods that prioritize environmental sustainability and worker safety — building a circular economy for the future.
+      </p>
+      <p>
+        Cool、Clean、Creativeな作業環境を実現し、循環型社会の構築に貢献します。
+      </p>
+      <a href="#about" class="btn-outline" style="margin-top:16px;">
+        Learn More
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── BUSINESS ───────────────────────────────────────────── -->
+  <section id="business">
+    <div class="business-header">
+      <p class="section-label">Our Business</p>
+      <h2 class="section-title">プロダクト・サービス</h2>
+    </div>
+    <div class="business-grid">
+
+      <!-- CoolLaser -->
+      <div class="biz-card biz-card-01">
+        <div class="biz-card-bg"></div>
+        <div class="biz-card-content">
+          <div class="biz-num">01</div>
+          <span class="biz-tag">Laser Technology</span>
+          <h3 class="biz-name">CoolLaser</h3>
+          <p class="biz-desc">
+            老朽化したインフラの錆・塗膜をレーザーで除去。
+            環境負荷ゼロ・作業者にやさしい次世代の塗膜剥離技術。<br><br>
+            Laser-based rust and paint coating removal for aging infrastructure — zero chemical waste, zero harm to workers.
+          </p>
+          <a href="#" class="btn-outline">READ MORE →</a>
+        </div>
+      </div>
+
+      <!-- SOSEI -->
+      <div class="biz-card biz-card-02">
+        <div class="biz-card-bg"></div>
+        <div class="biz-card-content">
+          <div class="biz-num">02</div>
+          <span class="biz-tag">Roof Extension</span>
+          <h3 class="biz-name">SOSEI</h3>
+          <p class="biz-desc">
+            老朽化した工場の屋根を、操業を止めずに延命。
+            工場を動かしたまま施工できる屋根の更生工法。<br><br>
+            Roof extension technology for aging factories — extend lifespan without any operational interruption.
+          </p>
+          <a href="#" class="btn-outline">READ MORE →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ──────────────────────────────────────────────── -->
+  <section id="about">
+    <div class="about-visual">
+      <div class="about-img"></div>
+      <div class="about-accent-box"></div>
+      <div class="about-stat">
+        <span class="about-stat-num">∞</span>
+        <span class="about-stat-label">Innovation</span>
+      </div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">About Us</p>
+      <div class="about-tagline">キレイに、未来へ</div>
+      <h2 class="section-title">株式会社トヨコー</h2>
+      <div class="divider"></div>
+      <p>
+        株式会社トヨコーは、インフラメンテナンス分野に特化した革新的なレーザー技術ソリューションプロバイダーです。
+      </p>
+      <p>
+        TOYOKOH Inc. is a solutions provider focused on innovative laser technology for infrastructure maintenance. We create Cool, Clean, and Creative workspaces while establishing circular economies for a sustainable future.
+      </p>
+      <p>
+        社会インフラが直面する老朽化という緊急課題に対し、環境と作業者にやさしい革新的なメンテナンス手法で応えます。
+      </p>
+      <a href="#" class="btn-primary" style="margin-top: 24px;">
+        About TOYOKOH
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── RECRUIT ─────────────────────────────────────────────── -->
+  <section id="recruit">
+    <div class="recruit-bg"></div>
+    <div class="recruit-content">
+      <p class="section-label">Recruit</p>
+      <h2 class="section-title">Create Innovation —<br>ともに前例のない価値を。</h2>
+      <div class="divider"></div>
+      <p>
+        私たちは、既存の常識にとらわれない発想で、インフラメンテナンスの未来を創る仲間を探しています。<br><br>
+        We're looking for people who want to develop unprecedented value together — pioneers who challenge the status quo and create innovation in infrastructure maintenance.
+      </p>
+      <a href="#" class="btn-primary">
+        View Openings
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── NEWS ───────────────────────────────────────────────── -->
+  <section id="news">
+    <div class="news-header">
+      <div>
+        <p class="section-label">News</p>
+        <h2 class="section-title">最新情報</h2>
+      </div>
+      <a href="#" class="btn-outline" style="color:#000; border-color:#ccc;">
+        All News →
+      </a>
+    </div>
+    <div class="news-list">
+      <a href="#" class="news-item">
+        <span class="news-date">2026.05.28</span>
+        <span class="news-cat">IR</span>
+        <span class="news-title">アナリストレポートを掲載しました（フィスコ）</span>
+        <span class="news-arrow">→</span>
+      </a>
+      <a href="#" class="news-item">
+        <span class="news-date">2026.05.12</span>
+        <span class="news-cat">Media</span>
+        <span class="news-title">静岡朝日テレビ「とびっきり！しずおか」にて CoolLaser が紹介されました</span>
+        <span class="news-arrow">→</span>
+      </a>
+      <a href="#" class="news-item">
+        <span class="news-date">2026.04.24</span>
+        <span class="news-cat">Media</span>
+        <span class="news-title">日経CNBCにて代表取締役のインタビューが放映されました</span>
+        <span class="news-arrow">→</span>
+      </a>
+      <a href="#" class="news-item">
+        <span class="news-date">2026.03.18</span>
+        <span class="news-cat">IR</span>
+        <span class="news-title">2026年3月期 第3四半期決算短信を公開しました</span>
+        <span class="news-arrow">→</span>
+      </a>
+      <a href="#" class="news-item">
+        <span class="news-date">2026.02.05</span>
+        <span class="news-cat">Press</span>
+        <span class="news-title">CoolLaser 新モデルの販売開始に関するお知らせ</span>
+        <span class="news-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ────────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="contact-text">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title" style="color:var(--clr-white);">お問い合わせ</h2>
+      <div class="divider"></div>
+      <p>
+        製品・サービスに関するお問い合わせ、導入のご相談はこちらよりお気軽にどうぞ。<br><br>
+        For inquiries about our products and services, or to discuss implementation, please reach out using the form.
+      </p>
+    </div>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-field">
+          <label>お名前 / Name *</label>
+          <input type="text" placeholder="山田 太郎" required />
+        </div>
+        <div class="form-field">
+          <label>会社名 / Company</label>
+          <input type="text" placeholder="株式会社〇〇" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label>メールアドレス / Email *</label>
+        <input type="email" placeholder="example@company.co.jp" required />
+      </div>
+      <div class="form-field">
+        <label>お問い合わせ内容 / Message *</label>
+        <textarea placeholder="ご質問・ご相談内容をご記入ください。" required></textarea>
+      </div>
+      <button type="submit" class="btn-primary" style="border:none; cursor:pointer;">
+        送信する / Go to form
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#hero" class="logo">TOYO<span>KOH</span></a>
+        <p>株式会社トヨコー<br>TOYOKOH Inc.<br><br>インフラメンテナンスに革命を。</p>
+        <div class="social-links" style="margin-top:20px;">
+          <a href="#" class="social-link" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Business</h4>
+        <ul>
+          <li><a href="#business">CoolLaser</a></li>
+          <li><a href="#business">SOSEI</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#recruit">Recruit</a></li>
+          <li><a href="#news">IR</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© TOYOKOH Inc. All Rights Reserved.</p>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 60);
+    });
+    // Trigger once on load
+    header.classList.toggle('scrolled', window.scrollY > 60);
+
+    // Contact form
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = '送信しました / Sent ✓';
+      btn.style.background = '#0077b6';
+      setTimeout(() => {
+        btn.innerHTML = '送信する / Go to form <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
+        btn.style.background = '';
+        e.target.reset();
+      }, 3000);
+    }
+
+    // Smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
